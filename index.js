@@ -105,8 +105,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				'https://sys.pixiubit.com/api/receive_deposits',
 				{
 					json: {
-						'coin':'BTC',
-						'coinid':1,
+						'coin':'NEMT',
+						'coinid':7,
 						'broker_id':2,
 						'api_key':crypto.createHash('md5').update('access_send_deposits_2').digest("hex"),
 						'data_deposits':JSON.stringify(data_post)
@@ -144,8 +144,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				'https://sys.pixiubit.com/api/receive_deposits',
 				{
 					json: {
-						'coin':'BTC',
-						'coinid':1,
+						'coin':'NEMT',
+						'coinid':7,
 						'broker_id':2,
 						'api_key':crypto.createHash('md5').update('access_send_deposits_2').digest("hex"),
 						'data_deposits':JSON.stringify(data_post)
