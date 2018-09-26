@@ -99,7 +99,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				str = String.fromCharCode.apply(String, bytes);
 				var mssg = str;
 			}
-			var data_post = [{'coin':'BTC','broker_id':2,'address':data1.transaction.recipient,'category':'receive','amount':data1.transaction.amount/1000000,'confirmations':0,'txid':data1.meta.hash.data,'message':mssg}];
+			var data_post = [{'coin':'NEMT','broker_id':2,'address':data1.transaction.recipient,'category':'receive','amount':data1.transaction.amount/1000000,'confirmations':0,'txid':data1.meta.hash.data,'message':mssg}];
 			if(data1.transaction.recipient == address){
 				request.post(
 				'https://sys.pixiubit.com/api/receive_deposits',
@@ -138,7 +138,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				str = String.fromCharCode.apply(String, bytes);
 				var mssg = str;
 			}
-			var data_post = [{'coin':'BTC','broker_id':2,'address':data1.transaction.recipient,'category':'receive','amount':data1.transaction.amount/1000000,'confirmations':2,'txid':data1.meta.hash.data,'message':mssg}];
+			var data_post = [{'coin':'NEMT','broker_id':2,'address':data1.transaction.recipient,'category':'receive','amount':data1.transaction.amount/1000000,'confirmations':2,'txid':data1.meta.hash.data,'message':mssg}];
 			if(data1.transaction.recipient == address){
 				request.post(
 				'https://sys.pixiubit.com/api/receive_deposits',
