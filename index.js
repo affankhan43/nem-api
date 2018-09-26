@@ -80,11 +80,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	connector.connect().then(function() {
 		// If we are here we are connected
 		console.log("Connected");
-		nem.com.websockets.subscribe.account.data(connector, function(res) {
-			var data1 = JSON.stringify(res);
-			var data1 = JSON.parse(data1);
-			console.log(data1.meta.status);
-		});
 		nem.com.websockets.subscribe.account.transactions.unconfirmed(connector, function(res) {
 			var data1 = JSON.stringify(res);
 			var data1 = JSON.parse(data1);
@@ -117,7 +112,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 						console.log(body)
 					}
 					else{
-						console.log(error)
+						//console.log(error)
 						console.log(response)
 					}
 				})
@@ -156,7 +151,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 						console.log(body)
 					}
 					else{
-						console.log(error)
 						console.log(response)
 					}
 				})
