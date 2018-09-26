@@ -7,7 +7,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 	app.post('/sendMoney', function(req, res){
-		if(req.ip == '127.0.0.1'){
+		var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+		if (ip.substr(0, 7) == "::ffff:") {
+  			ip = ip.substr(7)
+		}
+		if(ip=='127.0.0.1'){
 			var address = req.body.address;
 			var privkey = req.body.privkey;
 			
