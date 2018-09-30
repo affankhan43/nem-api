@@ -61,7 +61,45 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			}
 			var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, 7890);
 			var isValid = nem.com.requests.account.data(endpoint, address).then(function(responsed) {
-				res.send({'status':true,'data':responsed});
+				var acc_data = JSON.stringify(responsed);
+				var acc_data = JSON.parse(acc_data);
+				if (typeof acc_data.account.balance == 'undefined'){
+					res.send({'status':false,'message':'undefined'});
+				}
+				else{
+					res.send({'status':true,'amount':acc_data.account.balance/1000000});
+					//res.send({'status':true,'amount':responsed});
+				}
+			}, function(err) {
+				res.send({'status':false,'message':err});
+			});
+		}
+		else{
+			res.send({'status' : 'error','message':'Unauthorized Request'+ip});
+		}
+	});
+	app.post('/addressIncoming', function(req, res){
+		var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+		if (ip.substr(0, 7) == "::ffff:") {
+  			ip = ip.substr(7)
+		}
+		if(ip=='127.0.0.1'){
+			var address = req.body.address;
+			var blockHeight = req.body.blockHeight;
+			if(!address){
+				res.send({'status' : 'error', 'message' : 'address missing'});
+			}
+			var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, 7890);
+			var isValid = nem.com.requests.account.transactions.incoming(endpoint, address,"5f846e03c6b89ae93b1eaecd29872e48839b8ecc86e4f8ca46fcffc026e367b6").then(function(responsed) {
+				var acc_data = JSON.stringify(responsed);
+				var acc_data = JSON.parse(acc_data);
+				var i =0;
+				var make_data = {};
+				while(acc_data.data[i].meta.id >= 316100){
+					make_data[i] = {'txid':acc_data.data[i].meta.hash.data,'block_height':acc_data.data[i].meta.id};
+					i++;
+				}
+				res.send({'status':true,'message':make_data});
 			}, function(err) {
 				res.send({'status':false,'message':err});
 			});
