@@ -15,9 +15,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 		if(ip=='127.0.0.1'){
 			var address = req.body.address;
 			var privkey = req.body.privkey;
+			var amount = req.body.amount;
 			
-			if(!address || !privkey){
-				res.send({'status' :false, 'message':'address or private key missing'});
+			if(!address || !privkey || !amount){
+				res.send({'status' :false, 'message':'Fields Missing'});
 			}
 			var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, 7890);
 			var privkeys = Buffer.from(privkey, 'base64').toString('ascii')
@@ -27,20 +28,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				res.send({"status":false,"message":"Invalid Address/Private Key"});
 			}
 			else{
-				res.send({"status":true,"message":"GOOD"});	
+				var common = nem.model.objects.create("common")("", privkey);
+				var transferTransaction = nem.model.objects.create("transferTransaction")(address, , "NEM");
+				var transactionEntity = nem.model.transactions.prepare("transferTransaction")(common, transferTransaction, nem.model.network.data.testnet.id);
+				nem.model.transactions.send(common, transactionEntity, endpoint).then(function(response){
+					var with_data = JSON.stringify(response);
+					var with_data = JSON.parse(acc_data);
+					res.send(response);
+				});
 			}
-			//var common = nem.model.objects.create("common")("", privkey);
-			//
-			// if(isValid == true){
-			// 	var transferTransaction = nem.model.objects.create("transferTransaction")(address, 1, "NEM");
-			// 	var transactionEntity = nem.model.transactions.prepare("transferTransaction")(common, transferTransaction, nem.model.network.data.testnet.id);
-			// 	nem.model.transactions.send(common, transactionEntity, endpoint).then(function(response){
-			// 		res.send(response);
-			// 	});
-			// }
-			// else{
-			// 	res.send({"status":false,"message":"Invalid Address"});
-			// }
 		}
 		else{
 			res.send({'status' : 'error','message':'Unauthorized Request'});
