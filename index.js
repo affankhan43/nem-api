@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				nem.model.transactions.send(common, transactionEntity, endpoint).then(function(response){
 					var with_data = JSON.stringify(response);
 					var with_data = JSON.parse(with_data);
-					res.send(response);
+					res.send({"status":true,"txid":with_data.transactionHash.data});
 				});
 			}
 		}
