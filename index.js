@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				var transactionEntity = nem.model.transactions.prepare("transferTransaction")(common, transferTransaction, nem.model.network.data.testnet.id);
 				nem.model.transactions.send(common, transactionEntity, endpoint).then(function(response){
 					var with_data = JSON.stringify(response);
-					var with_data = JSON.parse(acc_data);
+					var with_data = JSON.parse(with_data);
 					res.send(response);
 				});
 			}
