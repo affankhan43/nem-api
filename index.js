@@ -26,6 +26,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			if(pIsValid == false || isValid == false){
 				res.send({"status":false,"message":"Invalid Address/Private Key"});
 			}
+			else{
+				res.send({"status":true,"message":"GOOD"});	
+			}
 			//var common = nem.model.objects.create("common")("", privkey);
 			//
 			// if(isValid == true){
