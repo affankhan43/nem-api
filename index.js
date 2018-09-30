@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			if(pIsValid == false || isValid == false){
 				res.send({"status":false,"message":"Invalid Address/Private Key"});
 			}
-			var common = nem.model.objects.create("common")("", privkey);
+			//var common = nem.model.objects.create("common")("", privkey);
 			//
 			// if(isValid == true){
 			// 	var transferTransaction = nem.model.objects.create("transferTransaction")(address, 1, "NEM");
