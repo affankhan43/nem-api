@@ -42,7 +42,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 							res.send({"status":true,"txid":with_data.transactionHash.data});
 						}
 						else{
-							res.send({"status":false,"message"=>with_data.message});
+							res.send({"status":false,"message":with_data.message});
 						}
 					}
 				});
