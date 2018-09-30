@@ -34,7 +34,17 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				nem.model.transactions.send(common, transactionEntity, endpoint).then(function(response){
 					var with_data = JSON.stringify(response);
 					var with_data = JSON.parse(with_data);
-					res.send({"status":true,"txid":with_data.transactionHash.data});
+					if (typeof with_data.message == 'undefined'){
+						res.send({'status':false,'message':'undefined'});
+					}
+					else{
+						if(with_data.message == 'SUCCESS'){
+							res.send({"status":true,"txid":with_data.transactionHash.data});
+						}
+						else{
+							res.send({"status":false,"message"=>with_data.message});
+						}
+					}
 				});
 			}
 		}
