@@ -129,16 +129,17 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			res.send({'status' : 'error','message':'Unauthorized Request'+ip});
 		}
 	});
-	var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, nem.model.nodes.websocketPort);
+	var endpoint = nem.model.objects.create("endpoint")("http://50.3.87.123", nem.model.nodes.websocketPort);
 	// Address to subscribe
 	var address = "TAWVYOMO5H4IDYTRWSYZQMZ6TLIYSBXPUWU3HXTX" ;
 	// Create a connector object
 	var connector = nem.com.websockets.connector.create(endpoint, address);
+	console.log(connector);
 	var request = require('request');
 	// Connect using connector
-	connector.connect().then(function() {
+	connector.connect().then(function(response) {
 		// If we are here we are connected
-		console.log("Connected");
+		console.log("Connected"+response);
 		nem.com.websockets.subscribe.account.transactions.unconfirmed(connector, function(res) {
 			var data1 = JSON.stringify(res);
 			var data1 = JSON.parse(data1);
