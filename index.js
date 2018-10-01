@@ -209,7 +209,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 					if (!error && response.statusCode == 200) {
 						var body = JSON.stringify(body);
 						var body = JSON.parse(body);
-						console.log(body.response);
+						console.log(body);
 					}
 					else{
 						//console.log(error)
