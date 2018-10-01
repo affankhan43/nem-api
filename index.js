@@ -131,7 +131,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	});
 	var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, nem.model.nodes.websocketPort);
 	// Address to subscribe
-	var address = "TAWVYOMO5H4IDYTRWSYZQMZ6TLIYSBXPUWU3HXTX";
+	var address = "TAWVYOMO5H4IDYTRWSYZQMZ6TLIYSBXPUWU3HXTX" ;
 	// Create a connector object
 	var connector = nem.com.websockets.connector.create(endpoint, address);
 	var request = require('request');
