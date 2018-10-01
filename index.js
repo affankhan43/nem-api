@@ -134,7 +134,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	var address = "TAWVYOMO5H4IDYTRWSYZQMZ6TLIYSBXPUWU3HXTX" ;
 	// Create a connector object
 	var connector = nem.com.websockets.connector.create(endpoint, address);
-	console.log(connector);
 	var request = require('request');
 	// Connect using connector
 	connector.connect().then(function(response) {
@@ -169,15 +168,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				},
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
-						console.log(body)
+						console.log(JSON.stringify(body))
 					}
 					else{
 						//console.log(error)
-						console.log(response)
+						console.log(JSON.stringify(response))
 					}
 				})
 			}
-			console.log(JSON.stringify(data_post));
+			//console.log(JSON.stringify(data_post));
 		});
 		nem.com.websockets.subscribe.account.transactions.confirmed(connector, function(res) {
 			var data1 = JSON.stringify(res);
@@ -208,14 +207,15 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				},
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
-						console.log(body)
+						console.log(JSON.stringify(body))
 					}
 					else{
-						console.log(response)
+						//console.log(error)
+						console.log(JSON.stringify(response))
 					}
 				})
 			}
-			console.log(JSON.stringify(data_post));
+			//console.log(JSON.stringify(data_post));
 		});
 		// Request account data
 		nem.com.websockets.requests.account.data(connector);
