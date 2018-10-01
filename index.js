@@ -168,7 +168,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				},
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
-						console.log(JSON.stringify(body))
+						console.log(JSON.stringify(response))
 					}
 					else{
 						//console.log(error)
@@ -209,7 +209,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 					if (!error && response.statusCode == 200) {
 						//var body = JSON.stringify(body);
 						//var body = JSON.parse(body);
-						console.log(body);
+						console.log(response);
 					}
 					else{
 						//console.log(error)
