@@ -129,7 +129,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 						str = String.fromCharCode.apply(String, bytes);
 						var mmsg = str;
 					}
-					make_data[i] = {'txid':acc_data.data[i].meta.hash.data,'block_height':acc_data.data[i].meta.id,'amount':acc_data.data[i].transaction.amount/1000000,'address':acc_data.data[i].transaction.recipient,'message':mmsg};
+					make_data[i] = {'txid':acc_data.data[i].meta.hash.data,'category':'receive','block_height':acc_data.data[i].meta.id,'amount':acc_data.data[i].transaction.amount/1000000,'address':acc_data.data[i].transaction.recipient,'message':mmsg};
 					i++;
 				}
 				res.send({'status':true,'transactions':make_data,'blockNo':blockNo});
