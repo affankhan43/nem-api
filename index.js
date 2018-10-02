@@ -128,6 +128,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 						}
 						str = String.fromCharCode.apply(String, bytes);
 						var mmsg = str;
+						if(mmsg.length >= 90){
+							mmsg = "too long";
+						}
 					}
 					make_data[i] = {'txid':acc_data.data[i].meta.hash.data,'category':'receive','block_height':acc_data.data[i].meta.id,'amount':acc_data.data[i].transaction.amount/1000000,'address':acc_data.data[i].transaction.recipient,'message':mmsg};
 					i++;
