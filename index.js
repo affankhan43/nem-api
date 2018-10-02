@@ -110,8 +110,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			if(!address || !blockHeight){
 				res.send({'status':'error', 'message':'address/blockHeight missing'});
 			}
-			var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, 7890);
-			var isValid = nem.com.requests.account.transactions.incoming(endpoint, address,"5f846e03c6b89ae93b1eaecd29872e48839b8ecc86e4f8ca46fcffc026e367b6").then(function(responsed) {
+			var endpoint = nem.model.objects.create("endpoint")("http://50.3.87.123", 7890);
+			var isValid = nem.com.requests.account.transactions.incoming(endpoint, address).then(function(responsed) {
 				var acc_data = JSON.stringify(responsed);
 				var acc_data = JSON.parse(acc_data);
 				var i =0;
