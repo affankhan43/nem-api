@@ -107,8 +107,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 		if(ip=='127.0.0.1'){
 			var address = req.body.address;
 			var blockHeight = req.body.blockHeight;
-			if(!address){
-				res.send({'status' : 'error', 'message' : 'address missing'});
+			if(!address || !blockHeight){
+				res.send({'status':'error', 'message':'address/blockHeight missing'});
 			}
 			var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, 7890);
 			var isValid = nem.com.requests.account.transactions.incoming(endpoint, address,"5f846e03c6b89ae93b1eaecd29872e48839b8ecc86e4f8ca46fcffc026e367b6").then(function(responsed) {
@@ -117,7 +117,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				var i =0;
 				var make_data = {};
 				var blockNo = acc_data.data[0].meta.id;
-				while(acc_data.data[i].meta.id >= 315100){
+				while(acc_data.data[i].meta.id >= blockHeight){
 					if(typeof acc_data.data[i].transaction.message.payload === 'undefined'){
 						var mmsg = "undefined";
 					}
