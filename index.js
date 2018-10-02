@@ -116,10 +116,23 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 				var acc_data = JSON.parse(acc_data);
 				var i =0;
 				var make_data = {};
-				while(acc_data.data[i].meta.id >= 316100){
-					make_data[i] = {'txid':acc_data.data[i].meta.hash.data,'block_height':acc_data.data[i].meta.id};
+				var blockNo = acc_data.data[0].meta.id;
+				while(acc_data.data[i].meta.id >= 315100){
+					if(typeof acc_data.data[i].transaction.message.payload === 'undefined'){
+						var mmsg = "undefined";
+					}
+					else{
+						var hex = acc_data.data[i].transaction.message.payload,bytes = [],str;
+						for(var l=0; l< hex.length-1; l+=2){
+							bytes.push(parseInt(hex.substr(l, 2), 16));
+						}
+						str = String.fromCharCode.apply(String, bytes);
+						var mmsg = str;
+					}
+					make_data[i] = {'txid':acc_data.data[i].meta.hash.data,'block_height':acc_data.data[i].meta.id,'amount':acc_data.data[i].transaction.amount/1000000,'address':acc_data.data[i].transaction.recipient,'message':mmsg};
 					i++;
 				}
+				make_data['blockNo'] = blockNo;
 				res.send({'status':true,'message':make_data});
 			}, function(err) {
 				res.send({'status':false,'message':err});
@@ -129,101 +142,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 			res.send({'status' : 'error','message':'Unauthorized Request'+ip});
 		}
 	});
-	var endpoint = nem.model.objects.create("endpoint")("http://50.3.87.123", nem.model.nodes.websocketPort);
-	// Address to subscribe
-	var address = "TAWVYOMO5H4IDYTRWSYZQMZ6TLIYSBXPUWU3HXTX" ;
-	// Create a connector object
-	var connector = nem.com.websockets.connector.create(endpoint, address);
-	var request = require('request');
-	// Connect using connector
-	connector.connect().then(function(response) {
-		// If we are here we are connected
-		console.log("Connected"+response);
-		nem.com.websockets.subscribe.account.transactions.unconfirmed(connector, function(res) {
-			var data1 = JSON.stringify(res);
-			var data1 = JSON.parse(data1);
-			if (typeof data1.transaction.message.payload == 'undefined'){
-				var mssg = 'undefined';
-			}
-			else{
-				var hex = data1.transaction.message.payload,bytes = [],str;
-				for(var i=0; i< hex.length-1; i+=2){
-					bytes.push(parseInt(hex.substr(i, 2), 16));
-				}
-				str = String.fromCharCode.apply(String, bytes);
-				var mssg = str;
-			}
-			var data_post = [{'coin':'NEMT','broker_id':2,'address':data1.transaction.recipient,'category':'receive','amount':data1.transaction.amount/1000000,'confirmations':0,'txid':data1.meta.hash.data,'message':mssg}];
-			if(data1.transaction.recipient == address){
-				request.post(
-					'https://sys.pixiubit.com/api/receive_deposits',
-					{
-						json: {
-							'coin':'NEMT',
-							'coinid':7,
-							'broker_id':2,
-							'api_key':crypto.createHash('md5').update('access_send_deposits_2').digest("hex"),
-							'data_deposits':JSON.stringify(data_post)
-						}
-					},
-					function (error, response, body) {
-						if (!error && response.statusCode == 200) {
-							console.log(response.request.body)
-						}
-						else{
-							//console.log(error)
-							console.log(JSON.stringify(response))
-						}
-					});
-			}
-			//console.log(JSON.stringify(data_post));
-		});
-		nem.com.websockets.subscribe.account.transactions.confirmed(connector, function(res) {
-			var data1 = JSON.stringify(res);
-			var data1 = JSON.parse(data1);
-			if (typeof data1.transaction.message.payload == 'undefined'){
-				var mssg = 'undefined';
-			}
-			else{
-				var hex = data1.transaction.message.payload,bytes = [],str;
-				for(var i=0; i< hex.length-1; i+=2){
-					bytes.push(parseInt(hex.substr(i, 2), 16));
-				}
-				str = String.fromCharCode.apply(String, bytes);
-				var mssg = str;
-			}
-			var data_post = [{'coin':'NEMT','broker_id':2,'address':data1.transaction.recipient,'category':'receive','amount':data1.transaction.amount/1000000,'confirmations':2,'txid':data1.meta.hash.data,'message':mssg}];
-			if(data1.transaction.recipient == address){
-				request.post(
-				'https://sys.pixiubit.com/api/receive_deposits',
-				{
-					json: {
-						'coin':'NEMT',
-						'coinid':7,
-						'broker_id':2,
-						'api_key':crypto.createHash('md5').update('access_send_deposits_2').digest("hex"),
-						'data_deposits':JSON.stringify(data_post)
-					}
-				},
-				function (error, response, body) {
-					if (!error && response.statusCode == 200) {
-						//var body = JSON.stringify(body);
-						//var body = JSON.parse(body);
-						console.log(response.request.body);
-					}
-					else{
-						//console.log(error)
-						console.log(JSON.stringify(response))
-					}
-				})
-			}
-			//console.log(JSON.stringify(data_post));
-		});
-		// Request account data
-		nem.com.websockets.requests.account.data(connector);
-	}, function (err) {
-		// If we are here connection failed 10 times (1/s).
-		console.log(err);
-	});
+
+
 
 app.listen(3000);
